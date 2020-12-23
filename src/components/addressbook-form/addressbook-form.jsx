@@ -24,6 +24,20 @@ class AddBookForm extends Component{
         this.changePhoneNumberHandler=this.changePhoneNumberHandler.bind(this);
     }
 
+    saveOrUpdateContact = (event) => {
+        console.log("Inside save");
+        event.preventDefault();
+        let contact = {
+            fullName: this.state.fullName,
+            address: this.state.address,
+            city: this.state.city,
+            state: this.state.state,
+            zip: this.state.zip,
+            phoneNumber: this.state.phoneNumber,
+        };
+        console.log('contact => ' + JSON.stringify(contact))
+    }
+
     changeFullNameHandler =(event)=>{
         this.setState({fullName:event.target.value});
         console.log(this.state.fullName);
@@ -66,15 +80,13 @@ class AddBookForm extends Component{
                 <div class="form-head">
                     PERSON ADDRESS FORM
                 </div>
-                <div class = "form-image" ><a href = "./addressBook_home.html"><img src={cross} /></a></div>
+                <div class = "form-image" ><a href = "./addressbook-home.html"><img src={cross} /></a></div>
             </div>
             <div class="row-content">
                 <input class="input" value={this.state.fullName} onChange={this.changeFullNameHandler} type="text" id="fullName" name="fullName" placeholder="Full Name" required/>
-                <error-output class="text-error" for="text"></error-output>
             </div>
             <div class="row-content">
                 <textarea class="input" id="address" value={this.state.address} onChange={this.changeAddressHandler} name="address" placeholder="Address" styles="height:100px"></textarea>
-                <error-output class="address-error" for="address"></error-output>
             </div>
             <div class="single-row-content">
                 <div class="inner-single-row">
@@ -103,15 +115,15 @@ class AddBookForm extends Component{
             </div>
             <div class="row-content">
                 <input class="input" type="text" name="phoneNumber" id="phoneNumber" value={this.state.phoneNumber} onChange={this.changePhoneNumberHandler} placeholder="Phone Number" required/>
-                <error-output class="phone-error" for="text"></error-output>
             </div>
             <div class = "buttonParent">
                 <div class = "submit-reset">
-                    <button type = "submit" class = "button submitButton" id="submitButton">Add</button>
-                    <button type ="button" onclick="resetForm()"  class = "button resetButton" id ="resetButton">Reset</button>
+                    <button type = "submit" class = "button submitButton" id="submitButton" onClick={this.saveOrUpdateContact} >Add</button>
+                    <button type ="button"  class = "button resetButton" id ="resetButton">Reset</button>
                 </div>
             </div>
-            </form></div>
+            </form>
+            </div>
         </div>    
     );
 }
