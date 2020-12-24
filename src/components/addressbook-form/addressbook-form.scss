@@ -190,6 +190,11 @@ error-output{
 }
 
 .submitButton {
+    background-color: #008CFF;
+    margin-left: 400px;
+}
+
+.submitButton[disabled] {
     background-color: #f5f5f5;
     margin-left: 400px;
 }
