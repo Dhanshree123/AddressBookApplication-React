@@ -32,6 +32,31 @@ class AddBookForm extends Component{
         this.changePhoneNumberHandler=this.changePhoneNumberHandler.bind(this);
     }
 
+    componentWillMount(){
+        if(this.state.id === 'new'){
+            return
+        }else{
+            AddressbookService.getContactById(this.state.id).then((res) =>{
+                let contact = res.data.data;
+                let Updatefullname=contact.fullName;
+                let Updateaddress=contact.address;
+                let Updatecity=contact.city;
+                let Updatestate=contact.state;
+                let Updatezip=contact.zip;
+                let Updatephonenumber=contact.phoneNumber;
+
+                this.setState({
+                    fullName: Updatefullname,
+                    address: Updateaddress,
+                    city: Updatecity,
+                    state: Updatestate,
+                    zip: Updatezip,
+                    phoneNumber: Updatephonenumber
+                });
+            });
+        }     
+    }
+
     saveOrUpdateContact = (event) => {
         console.log("Inside save");
         event.preventDefault();
@@ -44,8 +69,16 @@ class AddBookForm extends Component{
             phoneNumber: this.state.phoneNumber,
         };
         console.log('contact => ' + JSON.stringify(contact));
-        AddressbookService.createContact(contact);
-        alert("Contact Added");
+        if(this.state.id === 'new'){
+            AddressbookService.createContact(contact).then(res =>{
+                this.props.history.push('/home');
+            });
+        }else{
+            AddressbookService.updateContact(contact, this.state.id).then( res => {
+                this.props.history.push('/home');
+            });
+        }
+        alert("Contact Saved");
     }
 
     validateData =(data)=>{
@@ -154,7 +187,7 @@ class AddBookForm extends Component{
                 <div class="form-head">
                     PERSON ADDRESS FORM
                 </div>
-                <div class = "form-image" ><a href = "./addressbook-home.html"><img src={cross} /></a></div>
+                <div class = "form-image" ><Link to="/home"><img src={cross} /></Link></div>
             </div>
             <div class="row-content">
                 <input class="input" value={this.state.fullName} onChange={this.changeFullNameHandler} type="text" id="fullName" name="fullName" placeholder="Full Name" required/>
